@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        /*初始化  */
+        
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        /*清除默认样式  */
+        
+        ul {
+            list-style: none;
+        }
+        /*清除浮动  */
+        
+        .clearfix::before,
+        .clearfix::after {
+            content: "";
+            display: block;
+        }
+        
+        .clearfix::after {
+            clear: both;
+        }
+        
+        .clear {
+            *zoom: 1;
+        }
+        
+        .view {
+            width: 600px;
+            height: 400px;
+            margin: 60px auto;
+            position: relative;
+        }
+        /*li样式  */
+        
+        li {
+            float: left;
+            width: 120px;
+            height: 400px;
+            position: relative;
+            /*开启3d效果  */
+            transform-style: preserve-3d;
+            /*改变时过渡效果  */
+            transition: all 1s;
+        }
+        
+        span {
+            position: absolute;
+            width: 120px;
+            height: 400px;
+        }
+        /*背景图片  */
+        /*每个li标签的对应的span标签图片一致  */
+        /*将图片做成立体效果(先平移再转)*/
+        
+        li span:nth-child(1) {
+            background: url("img/1.jpg");
+            transform: translateZ(200px);
+        }
+        
+        li span:nth-child(2) {
+            background: url("img/2.jpg");
+            transform: translateY(-200px) rotateX(90deg);
+        }
+        
+        li span:nth-child(3) {
+            background: url("img/3.jpg");
+            transform: translateZ(-200px) rotateX(180deg);
+        }
+        
+        li span:nth-child(4) {
+            background: url("img/4.jpg");
+            transform: translateY(200px) rotateX(270deg);
+        }
+        /*不同li标签的背景图片位置改变，让每一个对应的span凑成完整图片  */
+        
+        li:nth-of-type(1) span {
+            background-position: 0 0;
+        }
+        
+        li:nth-of-type(2) span {
+            background-position: -120px 0;
+        }
+        
+        li:nth-of-type(3) span {
+            background-position: -240px 0;
+        }
+        
+        li:nth-of-type(4) span {
+            background-position: -360px 0;
+        }
+        
+        li:nth-of-type(5) span {
+            background-position: -480px 0;
+        }
+        /*焦点按钮  */
+        
+        .prev,
+        .next {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-color: rgba(0, 0, 0, .6);
+            top: 50%;
+            margin-top: -25px;
+            line-height: 50px;
+            text-align: center;
+            font: 40px consolas;
+            color: #fff;
+            cursor: pointer;
+        }
+        
+        .next {
+            right: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="view">
+        <ul class="clearfix">
+            <li>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </li>
+            <li>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </li>
+            <li>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </li>
+            <li>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </li>
+            <li>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </li>
+        </ul>
+        <div class="prev">&lt;</div>
+        <div class="next">&gt;</div>
+    </div>
+
+</body>
+<script src="js/jquery-1.12.4.min.js"></script>
+<script>
+    //             var flag = true
+    $(function() {
+        // 记录图片数
+        var count = 0;
+        // 假设可以单击旋转
+        var flag = true;
+        // 下一张单击事件
+        $(".next").on("click", function() {
+                if (flag) {
+                    // 不可单击旋转
+                    flag = false;
+                    count++;
+                    // li标签转
+                    $("li").each(function(index) {
+                        $(this).css({
+                            // 点击转动角度
+                            "transform": "rotateX(" + -90 * count + "deg)",
+                            // 动画延迟时间
+                            "transition-delay": (index * 0.2) + "s"
+                        })
+                    });
+                    // 旋转完成后改值，过渡时间1s，设置延迟动画
+                    setTimeout(function() {
+                        flag = true;
+                    }, 2000);
+                }
+            })
+            // 上一张
+        $(".prev").on("click", function() {
+            if (flag) {
+                // 不可单击旋转
+                flag = false;
+                count--;
+                // li标签转
+                $("li").each(function(index) {
+                    $(this).css({
+                        // 点击转动角度
+                        "transform": "rotateX(" + -90 * count + "deg)",
+                        // 动画延迟时间
+                        "transition-delay": (index * 0.2) + "s"
+                    })
+                });
+                // 旋转完成后改值，过渡时间1s，设置延迟动画
+                setTimeout(function() {
+                    flag = true;
+                }, 2000);
+            }
+        })
+    })
+</script>
+
+</html>
